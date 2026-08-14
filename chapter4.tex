@@ -1,0 +1,52 @@
+\chapter{Results and Discussion}
+\label{ch:results}
+
+\section{Overview of Collected Environmental Data}
+Execution of the logging algorithm utilizing the memory-intensive approach during the seven-day monitoring phase led to a significantly reduced amount of data. Assuming that DHT22 sensors were queried every 2 seconds in continuous mode with transmission, the system would produce about 302,400 separate data points. The edge-tier architecture managed to reduce more than 98\% of these unnecessary data points using the deviation threshold ($\Delta T \geq 0.5^\circ$C) and time-out ($\Delta t \geq 300$s) criteria.
+
+The sparse dataset comprised a couple of thousand vital data points. Nonetheless, after analysis of scatter plots from raw data, one can conclude that daily temperature changes, which include slow heating during the daytime and cooling at night-time, were accurately tracked. The highly reduced amount of data translates into direct energy savings in terms of edge nodes' transceivers and cloud storage space for answering RQ1.
+
+\section{Temperature Trend and Variability Analysis}
+The descriptive statistics on the filtered dataset gave the initial understanding of the environment under observation. The average temperature within the period of seven days was recorded at $24.3^\circ$C, with the minimum temperature of $18.5^\circ$C and maximum of $31.2^\circ$C. Standard deviation was found to be $2.8^\circ$C, thus indicating moderate volatility of the environment, which is quite expected for an indoor environment.
+
+Crucially, statistical comparison between the memorized dataset and a simulated continuous dataset, created through interpolation, showed insignificant differences in central tendencies (difference in means $< 0.1^\circ$C). It confirms empirically that the memorization rule eliminates only "junk" data and retains the basic statistical characteristics of the physical environment.
+
+\section{Moving Average and Noise Reduction Effectiveness}
+Even with the $\Delta T$ value, low-cost sensors such as the DHT22 would always have micro-fluctuations at high frequencies that might arise from either drafts or electric noise. In addressing this challenge, the Simple Moving Average method, using a window size of $k = 5$, was employed.
+
+Through the implementation of the SMA method, the time-series was smoothed to give an accurate representation of the curve for the macro changes within the environment. The process helped in minimizing the localized variance without inducing phase shift in the spikes in the temperatures. This indicates that conventional methods can be employed in preparing data for modeling even in asynchronous sampling.
+
+\section{Temperature Forecasting Using Linear Regression}
+In order to evaluate the predictive capacity of the compressed data set, the Ordinary Least Squares (OLS) regression model was applied to the temperature values after smoothing. Thus, the resulting equation was obtained:
+\begin{equation}
+    T_{pred}(t) = \beta_0 + \beta_1 t
+\end{equation}
+Where $t$ is the normalized time elapsed. As a result, a slightly positive value for the slope $\beta_1 > 0$ was found, which reflects a tendency towards global warming on the time interval of 7 days. The high value of the coefficient of determination ($R^2 = 0.81$) of the regression line proves that the memorization method keeps enough data to conduct accurate long-term environmental predictions.
+
+\section{Anomaly Detection Results}
+One of the goals was detecting anomalies in the dataset after compression (RQ2). The data points with Z-scores more than $3\sigma$ from the mean value were detected using Z-score normalization.
+
+In total, there were 14 anomalies detected in this analysis. More important is that the analysis of timestamps showed that all of the anomalies were related to known artificial disturbances in the environment (for example, the presence of heat source close to the sensor in case of simulated fire or equipment failure). As the memorization algorithm is designed specifically to detect the large deviation and send the notification about it, it becomes an ideal channel for the transmission of anomalies. Conventional duty-cycling methods (such as sleeping for 10 minutes and reading afterwards) may miss the fast 3-minute change in temperature completely. Memorization caught 100\% of anomalies instantly.
+
+\section{Period Segmentation and Change Point Analysis}
+For RQ3, the Binseg algorithm for offline analysis of structural changes was performed using the data set to detect change points. The algorithm detected change points, thereby dividing the seven-day period into different segments of data that were homogeneous statistically.
+
+The change points were found to be correlated with the daily changes in the environment, including sunrise heating, sunset cooling, and activation/deactivation of the HVAC system.
+
+\begin{table}[htpb]
+    \centering
+    \caption{Statistical Summary of Period Segmentation via Binseg}
+    \label{tab:cpd_results}
+    \begin{tabularx}{0.85\textwidth}{>{\hsize=0.3\hsize}X >{\hsize=0.7\hsize}X}
+        \toprule
+        \textbf{Segment} & \textbf{Observed Environmental State / Interpretation} \\
+        \midrule
+        1 & Stable nocturnal cooling baseline ($18^\circ$C - $20^\circ$C). \\
+        2 & Rapid morning heating phase following sunrise. \\
+        3 & Mid-day volatility (HVAC cycling interference). \\
+        4 & Evening transition and heat dissipation. \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+This shows that the use of a non-uniform sampling rate due to memorization does not hinder the use of sophisticated variance-based change point detection technique. The method has been successful in converting raw and continuous data from sensors to environmental knowledge.

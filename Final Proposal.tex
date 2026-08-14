@@ -1,0 +1,151 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{float}
+\usepackage{caption}
+
+\usepackage[ruled,vlined]{algorithm2e}
+\geometry{a4paper, margin=1in}
+\setstretch{1.5}
+
+\renewcommand{\bibname}{References}
+
+\begin{document}
+
+\begin{titlepage}
+\noindent
+\begin{minipage}[c]{0.65\textwidth}
+\centering
+Republic of Yemen\\
+Sana’a University\\
+Postgraduate Studies \& Scientific Research\\
+Faculty of Computer \& Information Technology
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.3\textwidth}
+\begin{flushright}
+\includegraphics[width=4.5cm]{sss.jpeg}\label{fig:sa}
+\end{flushright}
+\end{minipage}
+\vspace{2.5cm}
+
+\begin{center}
+The Master Proposal with Title:\\[1.5cm]
+
+\textbf{\Large A Memorization-Based Data Reduction and Analysis\\
+Framework for IoT Environmental Monitoring Using\\
+Raspberry Pi}\\[2.5cm]
+
+Submitted to\\
+Information Technology Department, Sana’a University\\[2.5cm]
+
+By:\\
+Ansam A. Al Khorasani\\[2.5cm]
+
+Supervisor:\\
+Dr.Ahmed Al-Shalabi
+\end{center}
+\end{titlepage}
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+The effective environmental monitoring in IoT usually leads to the creation of a large amount of time-series data that is stored and analyzed, which is characterized by redundancy, increasing the overhead of computing and storage. The present proposal presents a novel optimized approach for logging based on memorization that helps reduce the amount of redundant readings while preserving crucial information. In this regard, the researcher designed the system and connected the Raspberry Pi with a temperature and humidity sensor and monitored the environment over seven days. The logging technique was applied by taking readings from the sensors in cases of any change or at specific time periods. The gathered data was processed by applying a number of statistical and time series analysis methods, including descriptive statistics, correlation analysis, moving average smoothing, anomaly detection, and change point detection. The visualization techniques used in the process include scatter plots, histograms, and heat maps. According to the results of the monitoring system, there was a stable thermal environment with the temperature range varying from 20 to 23$^\circ$C, and the average value was 21.99$^\circ$C. The weak correlation between the temperature and humidity has been found ($r=0.12$). A total of 60 anomalies have been detected in the readings of the environment.
+
+\vspace{1cm}
+\textbf{Keywords:}\\
+Internet of Things (IoT), Environmental Monitoring, Raspberry Pi, Memorization, Anomaly Detection, Time-Series Analysis.
+
+\tableofcontents
+\listoftables
+\listoffigures
+
+\chapter*{List of Equations}
+\addcontentsline{toc}{chapter}{List of Equations}
+The mathematical formulations and analytical equations used throughout this research are cataloged below:
+\begin{enumerate}
+    \item \textbf{Equation 1.1: Z-Score Transformation Formula} (Section 1.8) --- Used for normalizing environmental fluctuations and detecting acute anomalies:
+    \begin{equation*}
+        Z_i = \frac{T_i - \mu}{\sigma}
+    \end{equation*}
+    \item \textbf{Equation 1.2: Moving Average Formula} (Section 1.8) --- Used for signal smoothing and noise reduction:
+    \begin{equation*}
+        SMA_t = \frac{1}{k} \sum_{i=0}^{k-1} X_{t-i}
+    \end{equation*}
+    \item \textbf{Equation 1.3: Binary Segmentation Cost Minimization} (Section 1.8) --- Used for structural change point detection:
+    \begin{equation*}
+        V(\tau) = \sum_{i=1}^{\tau} (x_i - \mu_1)^2 + \sum_{i=\tau+1}^{n} (x_i - \mu_2)^2
+    \end{equation*}
+    \item \textbf{Equation 1.4: Linear Regression Line} (Section 1.8) --- Used for trend modeling and short-term forecasting:
+    \begin{equation*}
+        \hat{y} = \beta_0 + \beta_1 x
+    \end{equation*}
+\end{enumerate}
+
+\chapter*{List of Abbreviations}
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+\begin{tabbing}
+\textbf{AM2302} \hspace{1cm} \= Digital Temperature and Humidity Sensor Model \\
+\textbf{API} \> Application Programming Interface \\
+\textbf{ARIMA} \> Auto-Regressive Integrated Moving Average \\
+\textbf{Binseg} \> Binary Segmentation Algorithm \\
+\textbf{CPD} \> Change Point Detection \\
+\textbf{CPU} \> Central Processing Unit \\
+\textbf{CSV} \> Comma-Separated Values \\
+\textbf{DHT} \> Digital Humidity and Temperature Sensor \\
+\textbf{GPIO} \> General-Purpose Input/Output \\
+\textbf{GND} \> Ground electrical reference \\
+\textbf{GHSOM} \> Growing Hierarchical Self-Organizing Map \\
+\textbf{IoT} \> Internet of Things \\
+\textbf{LED} \> Light-Emitting Diode \\
+\textbf{LMS} \> Learning Management System \\
+\textbf{LoRa} \> Long Range Wireless Communication Protocol \\
+\textbf{LoRaWAN} \> Long Range Wide Area Network \\
+\textbf{LSTM} \> Long Short-Term Memory Network \\
+\textbf{OS} \> Operating System \\
+\textbf{PELT} \> Pruned Exact Linear Time CPD Algorithm \\
+\textbf{RH} \> Relative Humidity \\
+\textbf{RPi} \> Raspberry Pi Single-Board Computer \\
+\textbf{SMA} \> Simple Moving Average \\
+\textbf{SSH} \> Secure Shell Protocol \\
+\textbf{SVM} \> Support Vector Machine \\
+\textbf{VCC} \> Voltage Common Collector (Power supply) \\
+\textbf{Wi-Fi} \> Wireless Fidelity Protocol \\
+\textbf{XAI} \> Explainable Artificial Intelligence
+\end{tabbing}
+
+\chapter*{Glossary of terms}
+\addcontentsline{toc}{chapter}{Glossary of terms}
+The following key terms are used throughout this proposal:
+\begin{itemize}
+    \item \textbf{Asynchronous Time-Series:} Data points collected through time at irregularly spaced time intervals due to triggering of events rather than periodic sampling.
+    \item \textbf{Binary Segmentation (Binseg):} An offline, greedy approach to detecting change points in a time-series by splitting the time-series recursively such that the sum of all segment variances becomes minimized.
+    \item \textbf{Change Point Detection (CPD):} A statistical paradigm dealing with pinpointing the exact time stamps at which the distribution of a time-series (mean or variance) undergoes an abrupt structural change.
+    \item \textbf{Edge Tier:} The tier in the topology of the IoT network which includes the collection and local processing of data on the physical nodes (Raspberry Pi in our case).
+    \item \textbf{Heuristic Optimization:} Rule-based optimization techniques which have been devised to provide an efficient solution to a problem when traditional approaches are computationally expensive or very slow.
+    \item \textbf{Internet of Things (IoT):} A network of interconnected physical objects having sensors and other communication components.
+    \item \textbf{Memorization-Based Logging:} A data reduction heuristic according to which the sensing node keeps the last transmitted state in its memory and logs a new reading only if there is a significant deviation from the stored one or if a temporal timeout occurs.
+    \item \textbf{Relative Humidity (RH):} The ratio between the partial pressure of water vapor in an air-water mixture and the saturation vapor pressure of water at a given temperature.
+    \item \textbf{Sensor Redundancy:} Continuous logging of identical or near-identical physical readings in stable environmental conditions which does not add any analytical value but drains communication and storage capacities.
+    \item \textbf{Z-Score Transformation:} A statistical data normalization method scaling a data point in terms of its standard deviation from the population mean.
+\end{itemize}
+
+\include{chapter1}
+\include{chapter2}
+\include{chapter3}
+\include{chapter4}
+\include{chapter5}
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

@@ -1,0 +1,100 @@
+\chapter{Literature Review}
+\label{ch:literature}
+
+\section{Introduction and Theoretical Framework}
+The widespread adoption of Internet of Things (IoT) technology in environmental monitoring systems has brought about a huge change from conventional sensoring architecture which is sparsely populated, costly, and inefficient to more densely and widely populated but resource-constrained nodes. This has brought about an increased amount of redundant time-series data owing to continuous and frequent data sensing. In order to address the challenges that have been raised by this situation, the current research is geared towards edge computing.
+
+The theoretical basis for this research lies in the critical interplay between optimization of resources at the edge level and statistics-based analysis at the cloud tier. Conventional designs for environmental monitoring often rely on a blind polling approach that disregards the stability of the environment, thus draining node batteries and clogging bandwidth. The theoretical framework of this research relies on a state-aware, light-weight filtering approach for the edge tier (memorization) that eliminates redundancies while maintaining accuracy of the data.
+
+Moreover, in the design of current environment sensing techniques, knowledge of past frameworks is essential. Whether it was the initial idea of wireless sensor networks (WSNs) or modern architectures like multi-tier edge-cloud infrastructures, the main objective has always been minimizing radio transmission times. Using an analysis of seminal papers and the evaluation of current solutions, we provide extensive context for our heuristic approach.
+
+Using localized filtering at the edge layer makes it possible to greatly decrease the number of transmissions, which saves energy and increases the lifetime of batteries powering sensing devices. In this literature review, the development process of such technology will be considered, showing how science has progressed from basic ideas of data aggregation to stateful edge logging. Such a study allows us to find critical gaps in the literature and show the necessity of our memorization heuristic.
+
+\section{IoT-Based Environmental Monitoring Systems and Gateways}
+Environmental monitoring on a universal level has been facilitated through the creation of single-board computers and inexpensive sensing modules, providing a good combination of affordability, performance, and adaptability. The application of such platforms as the Raspberry Pi along with temperature and humidity sensors for automation and visualization purposes has been extensively examined \cite{ref2, ref22, ref42}. In such architectures, the hardware interfaces with the sensors and executes software stacks to poll the physical variables.
+
+Nonetheless, past sensing systems have exhibited a lot of problems related to poor data quality, malfunction of sensors, and transmission errors in the networks. As noted in the systematic literature review provided by Teh et al. \cite{ref3, ref23, ref43}, digital sensors deployed in adverse or uncalibrated environments suffer from drift, electrical interference, and failure. The lack of appropriate error management and physical protection makes local data streams rapidly corrupted, affecting further analysis results.
+
+The derivation of useful scientific knowledge from these sensory flows depends on robust data pre-processing and analytics techniques. The initial studies were primarily concerned with descriptive statistics and visual representations, while later works turned their focus to predictive analytics. Polymeni et al. \cite{ref1, ref21, ref41} provided a detailed systematic review of the prediction models developed on the basis of the Internet of Things technology in the context of environment monitoring, showing the ability of machine learning and forecasting techniques to increase the intelligence of the systems, even though such prediction models are usually implemented in energy-consuming cloud computing environments for development.
+
+There are several particular challenges associated with the deployment of an environmental monitoring gateway in less developed countries, such as Yemen. Reliable electricity supply and uninterrupted access to high-speed internet connection is not available there. This means that the edge gateway needs to be able to function independently and collect data locally. In other words, the edge gateway needs to have enough intelligence to work autonomously, collecting data locally and avoiding the need for continuous network access.
+
+\section{Redundant Data Challenges in Continuous Sensing}
+The phenomenon of constant sensing in high-frequency IoT-based monitoring systems brings a tremendous amount of inefficiency when it comes to the resource usage. The values of various environmental attributes such as temperature and humidity possess high levels of temporal autocorrelation and stability in short time spans; therefore, consecutive values are very similar or even do not change at all physically. Transmission of all raw measurements to central nodes leads to data redundancy \cite{ref5, ref25, ref45, ref7, ref27, ref47}.
+
+There exist several issues that arise due to such redundancy. For WSNs, the continuously active state of the radio transceiver is the most power-consuming element. As Bari et al. noted \cite{ref14, ref34, ref54}, routing algorithms should be designed properly to avoid fast node depletion. Moreover, the transmission of enormous amounts of useless data clogs the channel and raises the level of packet collisions and transmission delays in local networks \cite{ref13, ref33, ref53}. Finally, the storage of terabytes of redundant values at the cloud storage level increases expenses and makes further data mining and indexing more complex \cite{ref8, ref28, ref48}. Therefore, the transmission of data on the strict schedule is not efficient enough, and intelligent filtering at the edge-tier is necessary.
+
+Apart from physical and hardware problems, data redundancy raises various mathematical and statistical issues. Statistical models assume that the data is independently and identically distributed; however, the continuous high-frequency sensing goes against this assumption because of the temporal autocorrelation. The fact that there are many readings that are correlated and similar can affect the regression analysis, the goodness of fit metrics and can artificially reduce the sample variance. Applying data reduction heuristics at the edge, we remove the redundant noise, producing a clean sparse time series that will be useful for retrospective statistical analysis and change point detection.
+
+\section{Taxonomy of IoT Data Reduction Approaches}
+Various data reduction approaches have been suggested by scholars in order to overcome the problem of sensory data redundancy, as shown in the conceptual taxonomy of this study. The researcher generally classifies the approaches into four groups:
+\begin{itemize}
+  \item \textbf{Data Compression:} Lossless and lossy data compression techniques like Compressive Sensing (CS) strive to capture and compress the sensory data below Nyquist sampling rate, restoring the signal in the cloud \cite{ref18, ref38, ref58}. Despite being bandwidth-efficient, computationally intensive encoding based on complex matrix calculations poses a serious burden on edge devices' microcontrollers and limits their practical implementation.
+    \item \textbf{Data Prediction:} Dual-predictive algorithms use the same mathematical model for data forecasting (such as Kalman filters, support vector machines, or ARIMA) at the edge gateway and at the cloud server. Edge gateway sends the sensor value only when the deviation between the actual sensor value and the predicted one exceeds some pre-defined threshold \cite{ref4, ref24, ref44}. The main drawback is the high memory and CPU consumption required to perform data prediction locally, thus draining the battery faster.
+    \item \textbf{Data Filtering:} Filtering algorithms check the physical validity of the collected data before transferring it. Advanced spatial filtering algorithms utilize swarm intelligence algorithms like Firefly optimization and Self-Organizing Maps (SOM) to collect the data from the multi-tier network structure \cite{ref17, ref37, ref57}. This approach is too complicated to apply in sparse one-tier networks with only one gateway.
+    \item \textbf{Heuristic State-Aware Filtering (Memorization):} In contrast to other approaches that use mathematical models for predicting future values, this algorithm stores the last transmitted value in the active memory of the edge node. If new sensor values deviate little from the memorized value, then there is no need to send this value \cite{ref15, ref35, ref55, ref16, ref36, ref56}.
+\end{itemize}
+
+Each of the mentioned above techniques poses unique trade-offs with regard to computation costs, bandwidth savings, and accuracy of reconstructed signals. Data compression methods imply intense computations that drain gateway battery resources. In turn, dual prediction models require constant synchronization and recalibration of local predictors, which results in additional overheads in terms of network control traffic. Data filtering and edge heuristics offer the most balanced trade-off in terms of reduction ratio and low complexity for resource-constrained gateways. Our study is devoted to the further development of state-aware memorization heuristic to create a robust and zero-overhead edge logging technique.
+
+\section{Memorization-Based Heuristics for Edge Tier}
+From among temporal data reduction techniques, the memorization technique should be highlighted as one that demonstrates a good balance between performance and efficiency. In order to evaluate each reading in zero-overhead manner, a gateway node needs to keep only a single state variable with the last logged reading in its memory. The gateway writes any sensor reading to persistent storage or sends it through the network only if the reading differs from memorized state value by some threshold or the maximal temporal window has expired.
+
+The state-aware thresholding mechanism allows transforming the constant high-frequency data streaming into the event-driven data stream with the help of sparse reading process. Mathematical efficiency of adaptive thresholding technique in IoT systems was proved by Zhang et al. \cite{ref15, ref35, ref55}, where more than 90\% of transmission was saved under stable environmental conditions. In turn, bioinspired event filtering heuristics proposed by Barrios-Avilés et al. \cite{ref16, ref36, ref56} highlight the advantages of ignoring redundant sensory information to extend the operational lifetime of nodes.
+
+These criteria for selecting an edge heuristic, the deviation threshold and the timeout interval, should both be optimized. Too small a deviation value results in a smaller reduction rate, and therefore the redundancy of logging will persist in the system. On the contrary, setting this threshold too large could cause a failure in capturing the crucial physical variations, hence reducing signal fidelity. The introduction of a maximum timeout interval represents one of the valuable benefits of the proposed scheme, which guarantees the logging of edge node's activity by the device even at the time when the environment is extremely stable. This timeout serves as a "heartbeat" mechanism that ensures the healthy condition of the sensors and prevents a lengthy ambiguity of logging time series.
+
+\section{Analytical Methodologies for Asynchronous Environmental Data}
+It is essential to consider the potential for the retrospective analysis of the asynchronously sampled sparse time-series in the context of applying the edge-tier data reduction technique. There are a number of statistically valid and proven methodologies for the analysis of reduced data:
+\begin{itemize}
+    \item \textbf{Trend Analysis and Filtering:} Linear regression trend modeling and Simple Moving Average (SMA) filtering techniques are frequently used to reveal the underlying environmental trends and filter out the high-frequency noise \cite{ref6, ref26, ref46, ref20, ref40, ref60}.
+   \item \textbf{Anomaly Detection:} Anomaly detection can help determine when sensors have failed or new threats arise. Statistical Z-score thresholding gives us a very efficient and lightweight edge alerting strategy, which can additionally be supplemented by Bayesian joint estimation methods \cite{ref19, ref39, ref59}. More complicated neural architectures, such as Growing Hierarchical Self-Organizing Maps (GHSOM) \cite{ref10, ref30, ref50}, along with active learning algorithms \cite{ref9, ref29, ref49} are utilized for centralized methods but are too complicated for resource-constrained gateways.
+    \item \textbf{Change Point Detection:} Scientists examine structural changes, including day/night cycles, using change point detection methods offline, such as Binary Segmentation (Binseg) and Pruned Exact Linear Time (PELT) \cite{ref11, ref31, ref51, ref12, ref32, ref52}. These algorithms segment the time series into homogeneous segments based on the minimization of variance cost, thus verifying the structural validity of the asynchronously sampled data.
+\end{itemize}
+
+To use the retrospective methods on the sparse time-series, one needs to implement special data pre-processing. As data reduction algorithms produce irregularly spaced samples, simple mathematical operations, such as rolling averages or lagged values for trend analysis, cannot be conducted without reconstructing the timeline first. In order to do that, the cloud tier has to reconstruct the continuous timeline using forward-fill imputation or local imputation techniques. Our proposal investigates how the combination of edge filtering and cloud reconstruction techniques can help keep the accuracy of OLS trend slopes, outlier detections, and Binseg change point locations intact, thus proving the necessity of continuous high-frequency transmission irrelevant statistically.
+
+\section{Comparative Review of Previous Researches}
+This paper has been placed within context through the presentation of a comparative review of the previous researches on IoT data reduction and analysis framework, their methodology used, their main advantages, and disadvantages for their deployment at edge level, in Table \ref{tab:lit_comparison_full}.
+
+\begin{table}[htpb]
+    \centering
+    \caption{Comprehensive Comparison of Recent IoT Data Reduction Frameworks}
+    \label{tab:lit_comparison_full}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{@{}llp{4cm}p{4cm}p{4cm}@{}}
+        \toprule
+        \textbf{Author (Year)} & \textbf{Approach} & \textbf{Methodology} & \textbf{Key Advantages} & \textbf{Limitations for Edge IoT} \\
+        \midrule
+        \addlinespace
+        Polymeni (2022) \cite{ref1, ref21, ref41} & Prediction & Systematic review of environmental forecasting models & Establishes analytical limits and mathematical trends. & Models are implemented in cloud due to high CPU overhead. \\
+        \addlinespace
+        Kumar (2025) \cite{ref2, ref22, ref42} & Acquisition & Basic Raspberry Pi and DHT11 monitoring & Extremely low cost; highly accessible hardware setup. & No data reduction; lacks deep statistical validation. \\
+        \addlinespace
+        Apostol (2021) \cite{ref4, ref24, ref44} & Prediction & Change-point enhanced anomaly detection & Highly accurate anomaly prediction before transmission. & Requires heavy local execution of forecasting algorithms. \\
+        \addlinespace
+        Mignone (2024) \cite{ref10, ref30, ref50} & Detection & Distributed, explainable GHSOM networks & High-dimensional outlier detection and transparency. & Incompatible with standard microcontrollers. \\
+        \addlinespace
+        Zhang (2023) \cite{ref15, ref35, ref55} & Filtering & Adaptive thresholding data reduction & Highly responsive to environmental volatility. & Threshold calibration requires cloud feedback loops. \\
+        \addlinespace
+        Barrios-Avilés (2018) \cite{ref16, ref36, ref56} & Filtering & Bioinspired filtering and event-based sensing & Drastic reduction in active radio state duration. & Produces irregularly sampled asynchronous streams. \\
+        \addlinespace
+        Alshehri (2025) \cite{ref17, ref37, ref57} & Aggregation & SOM and Firefly optimization algorithms & Excellent for dense, multi-tier spatial topologies. & Overly complex for single-node or sparse setups. \\
+        \addlinespace
+        \textbf{Proposed Framework} & \textbf{Filtering} & \textbf{State-Aware Memorization + Time-Windowing} & \textbf{Zero CPU overhead; perfectly preserves acute anomalies.} & \textbf{Requires cloud-tier asynchronous reconstruction.} \\
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+This comparison shows the emerging pattern in IoT research where initial solutions were based only on hardware connection and continuous logging and now the current trend is shifting towards resource optimization. However, an important issue here is that there exists a significant difference between complicated and cloud dependent compression methods and simple unvalidated edge filters. Our proposed solution aims at filling the gap by providing a simple edge heuristic which would be suitable for the use with cloud analysis.
+
+\section{Research Gap Identification}
+Though there exist numerous research contributions in the field of data optimization in IoT, the following gaps still exist:
+\begin{enumerate}
+    \item \textbf{Incompatible Nature of Advanced Edge Models:} Though algorithms like compressive sensing, dual-prediction Kalman filters, and machine learning models allow to get a great deal of data reduction, their high computational, memory, and energy requirements do not allow them to operate directly on cheap and battery-powered microcontrollers without creating a problem with computing power.
+    \item \textbf{Downstream Validation Missing:} Most of the research on lightweight edge thresholding and event filtering is concentrated on getting as high data reduction rate and increasing battery life as possible. They are rarely doing a full empirical analysis on the impact of such non-uniform data compression on further analytics, such as OLS linear regression modeling and anomaly detection using Z-scores and Binary Segmentation analysis.
+  \item \textbf{Lack of a Unified Lightweight Framework:} There is a very evident lack of an end-to-end framework that combines a very low-overhead, state-sensitive edge logging technique (for instance, memorization) along with a strong cloud-based statistical analysis of the resultant asynchronous data set, to prove that sparse sampling can be used to accurately model the environment.
+\end{enumerate}
+
+Solving these problems is critical to the future of scalable and sustainable IoT deployments. Through providing evidence of how a very lightweight edge-level technique can be used to provide reliable and high fidelity analysis downstream, this research clearly provides the engineering blueprint for low cost environmental monitoring, especially in developing nations.

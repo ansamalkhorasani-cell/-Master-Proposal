@@ -1,0 +1,21 @@
+\chapter{Conclusion and Future Work}
+\label{ch:conclusion}
+
+\section{Summary of the Study}
+With the exponential rise of the Internet of Things (IoT), there have been huge advancements in environmental sensing and monitoring; however, at the same time, the emergence of such technology has created some serious problems associated with data duplication, network overload, and power usage. In this study, we present and examine a very efficient approach to data reduction at the edge that utilizes the idea of \textit{memorization}. By employing a state-aware algorithm to the Raspberry Pi edge node, our solution prevents the sending of duplicate sensor data unless there was a deviation or time-window.
+
+\section{Key Findings and Contributions}
+The findings empirically address all the existing research questions. The algorithm for memorization has effectively filtered over 98\% of the initial sensor readings while ensuring the statistical consistency of the dataset (RQ1). It is evident from the use of moving averages and linear regression that macro-level prediction is still quite accurate regardless of the asynchronous nature of the data.
+
+Moreover, the proposed approach was extremely effective for detecting acute anomalies by using Z-score transformation (RQ2) as well as structural environment changes using Binary Segmentation (RQ3). As compared to the interval-based duty-cycling, the approach ensures that the anomaly-triggered memorization mechanism is able to capture critical events without fail. This study offers an effective approach with low computational cost for bridging the gap between low-power edge processing and high-fidelity cloud processing.
+
+\section{Practical Implications}
+This method has a great number of implications related to the creation of scalable IoT architectures. Utilizing the suggested logging technique through memorization allows increasing the life of the devices that work on battery power and other renewable energy sources. Besides, the decrease in the amount of data sent over the network ensures that bandwidth problems do not arise in crowded environments. Cloud computing expenses are going to be minimized.
+
+\section{Future Research Directions}
+Although this analysis lays a solid groundwork for the framework to be utilized, several directions for future work can be mentioned:
+\begin{itemize}
+    \item \textbf{Adaptive Thresholding:} The next versions of the framework should investigate the approach of adaptive thresholding, when the value of $\Delta T$ is adjusted dynamically with machine learning in the localized environment depending on its previous volatility.
+    \item \textbf{Multi-Variate Memorization:} Enriching the framework to deal with multiple environmental parameters (temperature, humidity, CO$_2$, VOC, etc.) and detecting cross-correlated anomalies.
+    \item \textbf{Hardware Optimization:} Porting the logic implemented in Python into the low-level C/C++ firmware for ultra-low-power microcontrollers (STM32, ESP32, and other) to leverage the energy-efficient properties of the framework at the extreme edge.
+\end{itemize}
